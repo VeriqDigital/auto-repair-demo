@@ -8,7 +8,7 @@ type DayPassProps = {
 
 const DayPass = ({ title, price, features }: DayPassProps) => {
   return (
-    <div className="rounded-3xl border border-white/10 bg-(--surface) p-8 hover:border-(--primary) hover:bg-(--surface-hover) transition">
+    <div className="rounded-3xl border border-white/10 bg-(--surface) p-8 transition-all duration-500 ease-out hover:scale-[1.02] hover:border-(--primary) hover:bg-(--surface-hover)">
       <h3 className="font-heading text-3xl font-bold">{title}</h3>
       <hr className="my-4 border-white/10" />
       <p className="mt-4 text-4xl font-black">${price}</p>
