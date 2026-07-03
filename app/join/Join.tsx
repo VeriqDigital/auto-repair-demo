@@ -1,6 +1,5 @@
 import JoinHero from "./JoinHero";
 import JoinFlow from "./JoinFlow";
-
 const Join = () => {
   return (
     <main>
