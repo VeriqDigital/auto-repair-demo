@@ -4,10 +4,10 @@ const Navbar = () => {
   const navItems = [
     { name: "Events", href: "/events" },
     { name: "Coaches", href: "/coaches" },
-    { name: "FAQ", href: "/faq" },
+    { name: "FAQ", href: "/#faq" },
     { name: "Tours", href: "/tours" },
     { name: "Contact Us", href: "/contact" },
-    { name: "Day Passes", href: "/day-passes" },
+    { name: "Day Passes", href: "/#day-passes" },
   ];
 
   return (

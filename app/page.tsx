@@ -1,4 +1,5 @@
 import DayPassSection from "@/components/home/DayPassSection";
+import FAQ from "@/components/home/FAQ";
 import Hero from "@/components/home/Hero";
 import PictureTiles from "@/components/home/PictureTiles";
 import VisitSection from "@/components/home/VisitSection";
@@ -12,8 +13,11 @@ export default function Home() {
       <Section>
         <VisitSection />
       </Section>
-      <Section>
+      <Section id="day-passes">
         <DayPassSection />
+      </Section>
+      <Section id="faq">
+        <FAQ />
       </Section>
     </>
   );
