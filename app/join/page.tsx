@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import Join from "./Join";
 
-const page = () => {
-  return <Join />;
+export const metadata: Metadata = {
+  title: "Join",
+  description:
+    "Browse membership options, compare plans, and join the Iron Palace luxury gym concept.",
 };
 
-export default page;
+export default function Page() {
+  return <Join />;
+}
