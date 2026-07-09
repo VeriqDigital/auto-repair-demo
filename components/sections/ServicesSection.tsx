@@ -1,30 +1,165 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import { services } from "@/data/services";
 
 const ServicesSection = () => {
+  const animationDirection = useRef(0);
+  const queuedSteps = useRef(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [trackOffset, setTrackOffset] = useState(-100);
+  const [transitionEnabled, setTransitionEnabled] = useState(false);
+  const visibleCount = Math.min(3, services.length);
+  const canRotate = services.length > visibleCount;
+  const carouselPanels = [-1, 0, 1].map((panelOffset) =>
+    Array.from({ length: visibleCount }, (_, serviceOffset) => {
+      const serviceIndex =
+        currentIndex + panelOffset + serviceOffset + services.length;
+
+      return services[serviceIndex % services.length];
+    }),
+  );
+
+  const startRotation = useCallback((direction: number) => {
+    animationDirection.current = direction;
+    setTransitionEnabled(true);
+    setIsAnimating(true);
+    setTrackOffset(direction === 1 ? -200 : 0);
+  }, []);
+
+  useEffect(() => {
+    if (isAnimating || queuedSteps.current === 0 || !canRotate) {
+      return;
+    }
+
+    const direction = queuedSteps.current > 0 ? 1 : -1;
+    queuedSteps.current -= direction;
+
+    const animationFrame = requestAnimationFrame(() => {
+      startRotation(direction);
+    });
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [canRotate, isAnimating, startRotation]);
+
+  const rotateServices = (direction: number) => {
+    if (!canRotate) {
+      return;
+    }
+
+    if (isAnimating) {
+      queuedSteps.current += direction;
+      return;
+    }
+
+    startRotation(direction);
+  };
+
+  const showPreviousServices = () => {
+    rotateServices(-1);
+  };
+
+  const showNextServices = () => {
+    rotateServices(1);
+  };
+
+  const handleSlideEnd = () => {
+    if (!isAnimating) {
+      return;
+    }
+
+    setTransitionEnabled(false);
+    setCurrentIndex(
+      (index) =>
+        (index + animationDirection.current + services.length) %
+        services.length,
+    );
+    setTrackOffset(-100);
+    setIsAnimating(false);
+  };
+
+  const getServiceCard = (service: (typeof services)[number]) => (
+    <article
+      key={service.title}
+      className="flex h-full flex-col rounded-lg border border-white/10 bg-(--surface) p-7"
+    >
+      <h3 className="font-heading text-lg font-black uppercase leading-tight text-white">
+        {service.title}
+      </h3>
+      <p className="mt-5 text-sm leading-7 text-white/68">
+        {service.description}
+      </p>
+    </article>
+  );
+
+  const currentServiceTitles = Array.from(
+    { length: visibleCount },
+    (_, serviceOffset) =>
+      services[
+        (currentIndex + serviceOffset + services.length) % services.length
+      ].title,
+  );
+
   return (
-    <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
+    <div className="grid items-center gap-10 lg:grid-cols-[0.45fr_1.55fr] xl:gap-14 2xl:-mx-16">
       <div>
         <p className="text-sm font-bold uppercase tracking-[0.3em] text-(--primary)">
           Services
         </p>
-        <h2 className="mt-4 max-w-xl font-heading text-4xl font-black uppercase leading-tight text-white md:text-6xl">
-          Replace These Cards With What The Business Actually Sells
+        <h2 className="mt-4 max-w-md font-heading text-4xl font-black uppercase leading-tight text-white md:text-5xl xl:text-6xl">
+          From oil changes to transmission repair. We have you covered.
         </h2>
       </div>
-      <div className="grid gap-5 md:grid-cols-3">
-        {services.map((service) => (
-          <article
-            key={service.title}
-            className="rounded-lg border border-white/10 bg-(--surface) p-6"
+      <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5">
+        <button
+          type="button"
+          onClick={showPreviousServices}
+          disabled={!canRotate}
+          className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-black/35 text-2xl leading-none text-white/75 transition hover:border-(--primary) hover:text-(--primary) disabled:opacity-50"
+          aria-label="Show previous services"
+        >
+          <span className="-translate-y-px" aria-hidden="true">
+            &larr;
+          </span>
+        </button>
+        <div className="h-96 overflow-hidden" aria-live="polite">
+          <div
+            className="flex h-full"
+            onTransitionEnd={handleSlideEnd}
+            style={{
+              transform: `translateX(${trackOffset}%)`,
+              transition: transitionEnabled
+                ? "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)"
+                : "none",
+            }}
           >
-            <h3 className="font-heading text-xl font-black uppercase text-white">
-              {service.title}
-            </h3>
-            <p className="mt-4 text-sm leading-6 text-white/65">
-              {service.description}
-            </p>
-          </article>
-        ))}
+            {carouselPanels.map((panelServices, panelIndex) => (
+              <div
+                key={panelIndex}
+                className="grid h-full w-full shrink-0 gap-6 md:grid-cols-3"
+                aria-hidden={panelIndex !== 1}
+              >
+                {panelServices.map(getServiceCard)}
+              </div>
+            ))}
+          </div>
+          <span className="sr-only">
+            Showing services: {currentServiceTitles.join(", ")}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={showNextServices}
+          disabled={!canRotate}
+          className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-black/35 text-2xl leading-none text-white/75 transition hover:border-(--primary) hover:text-(--primary) disabled:opacity-50"
+          aria-label="Show next services"
+        >
+          <span className="-translate-y-px" aria-hidden="true">
+            &rarr;
+          </span>
+        </button>
       </div>
     </div>
   );
