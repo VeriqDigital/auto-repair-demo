@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { ModalType } from "@/components/layout/LeadModal";
 
 export const siteConfig = {
@@ -7,8 +6,10 @@ export const siteConfig = {
   header: "Auto Care You Can Trust",
   blurb: "Honest repairs, certified technicians, and dependable service to keep your vehicle running its best.",
   heroImage: "/starter-hero.jpg",
+  aboutImage: "/owner.jpg",
+  ownerName: "Pilav",
   description:
-    "A reusable small-business website starter built with Next.js, TypeScript, and Tailwind CSS.",
+    "Proudly serving the Chicagoland area for over 45 years.",
   url: "https://example.com",
   locale: "en_US",
   contact: {
