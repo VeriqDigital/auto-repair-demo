@@ -1,8 +1,12 @@
+import Image from "next/image";
 import type { ModalType } from "@/components/layout/LeadModal";
 
 export const siteConfig = {
-  name: "Business Starter Site",
-  shortName: "Starter",
+  name: "ABC Auto Repair",
+  shortName: "ABC Auto",
+  header: "Auto Care You Can Trust",
+  blurb: "Honest repairs, certified technicians, and dependable service to keep your vehicle running its best.",
+  heroImage: "/starter-hero.jpg",
   description:
     "A reusable small-business website starter built with Next.js, TypeScript, and Tailwind CSS.",
   url: "https://example.com",
@@ -36,7 +40,6 @@ export const navigation: NavItem[] = [
   { label: "Services", href: "/#services" },
   { label: "About", href: "/about" },
   { label: "FAQ", href: "/#faq" },
-  { label: "Request Quote", modal: "quote" },
   { label: "Contact", modal: "contact" },
 ];
 
@@ -51,3 +54,8 @@ export const primaryCta = {
   label: "Request a quote",
   modal: "quote",
 } as const satisfies { label: string; modal: ModalType };
+
+export const secondaryCTA = {
+  label: "View Services",
+  href: "services",
+} as const satisfies { label: string; href: string};

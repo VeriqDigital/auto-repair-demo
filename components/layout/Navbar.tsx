@@ -42,10 +42,10 @@ const Navbar = () => {
 
   return (
     <header className="fixed left-0 top-0 z-50 flex w-full justify-center px-4 pt-5 text-sm">
-      <nav className="flex w-full max-w-5xl items-center justify-between gap-6 rounded-full border border-white/10 bg-black/55 px-5 py-3 text-sm shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-md sm:px-7">
+      <nav className="flex w-full max-w-5xl items-center justify-between gap-6 rounded-full border border-white/10 bg-black/55 px-6 py-4 text-sm shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-md sm:px-7">
         <Link
           href="/"
-          className="font-heading text-lg font-black uppercase tracking-wide text-white"
+          className="font-heading text-2xl font-black uppercase tracking-wide text-white"
         >
           {siteConfig.shortName}
         </Link>
@@ -56,7 +56,7 @@ const Navbar = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="font-medium text-white/72 transition hover:text-(--primary)"
+                className="text-base cursor-pointer font-medium text-white/72 transition hover:text-(--primary)"
               >
                 {item.label}
               </Link>
@@ -77,14 +77,14 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => openModal(primaryCta.modal)}
-            className="rounded-full bg-(--primary) px-4 py-2 font-semibold text-black transition hover:bg-(--primary-hover)"
+            className="cursor-pointer rounded-full bg-(--primary) px-6 py-2.5 font-semibold text-black transition hover:bg-(--primary-hover)"
           >
             {primaryCta.label}
           </button>
 
           <button
             type="button"
-            className="flex size-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:border-(--primary) hover:text-(--primary) md:hidden"
+            className="cursor-pointer flex size-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:border-(--primary) hover:text-(--primary) md:hidden"
             aria-label={
               isMenuOpen ? "Close navigation menu" : "Open navigation menu"
             }
