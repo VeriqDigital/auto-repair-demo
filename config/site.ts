@@ -42,6 +42,8 @@ export const navigation: NavItem[] = [
   { label: "About", href: "/about" },
   { label: "FAQ", href: "/#faq" },
   { label: "Contact", modal: "contact" },
+  { label: "Login", href: "/admin/login" },
+  { label: "Admin", href: "/admin" },
 ];
 
 export const footerLinks: NavItem[] = [
