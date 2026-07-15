@@ -8,9 +8,10 @@ const modalContent = {
   quote: {
     eyebrow: "Request quote",
     title: "Tell us what you need",
-    submitLabel: "Send request",
-    successTitle: "Thanks, we got your request.",
-    successMessage: "Someone from the business will follow up soon.",
+    submitLabel: "Preview request",
+    successTitle: "Demo complete",
+    successMessage:
+      "No quote request was sent or processed. This form is for demonstration purposes only.",
   },
   contact: {
     eyebrow: "Contact",
@@ -87,6 +88,16 @@ const LeadModal = ({
           </div>
         ) : (
           <form className="space-y-4" onSubmit={onSubmit}>
+            {isQuote && (
+              <div
+                className="rounded-md border border-(--primary)/55 bg-(--primary)/10 p-4 text-sm leading-6 text-white/85"
+                role="note"
+              >
+                <strong className="text-(--primary)">Demo only.</strong> This
+                quote form does not send or process requests. Do not enter real
+                personal information.
+              </div>
+            )}
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block text-sm font-semibold text-white/80">
                 Name

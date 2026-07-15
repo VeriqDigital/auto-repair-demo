@@ -45,6 +45,11 @@ const useLeadModal = () => {
       return;
     }
 
+    if (activeModal === "quote") {
+      setSubmittedModal("quote");
+      return;
+    }
+
     const formData = new FormData(event.currentTarget);
     const payload = {
       type: activeModal,
