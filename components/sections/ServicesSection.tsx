@@ -80,10 +80,13 @@ const ServicesSection = () => {
     setIsAnimating(false);
   };
 
-  const getServiceCard = (service: (typeof services)[number]) => (
+  const getServiceCard = (
+    service: (typeof services)[number],
+    serviceOffset: number,
+  ) => (
     <article
       key={service.title}
-      className="flex h-full flex-col rounded-lg border border-white/10 bg-(--surface) p-7"
+      className={`${serviceOffset > 0 ? "hidden md:flex" : "flex"} h-full flex-col rounded-lg border border-white/10 bg-(--surface) p-6 md:p-7`}
     >
       <h3 className="font-heading text-lg font-black uppercase leading-tight text-white">
         {service.title}
@@ -112,19 +115,22 @@ const ServicesSection = () => {
           From oil changes to transmission repair. We have you covered.
         </h2>
       </div>
-      <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5">
+      <div className="grid min-w-0 grid-cols-2 items-center gap-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-5">
         <button
           type="button"
           onClick={showPreviousServices}
           disabled={!canRotate}
-          className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-black/35 text-2xl leading-none text-white/75 transition hover:border-(--primary) hover:text-(--primary) disabled:opacity-50"
+          className="order-2 flex size-11 cursor-pointer items-center justify-center justify-self-start rounded-full border border-white/10 bg-black/35 text-2xl leading-none text-white/75 transition hover:border-(--primary) hover:text-(--primary) disabled:opacity-50 md:order-1"
           aria-label="Show previous services"
         >
           <span className="-translate-y-px" aria-hidden="true">
             &larr;
           </span>
         </button>
-        <div className="h-96 overflow-hidden" aria-live="polite">
+        <div
+          className="order-1 col-span-2 h-72 overflow-hidden md:order-2 md:col-span-1 md:h-96"
+          aria-live="polite"
+        >
           <div
             className="flex h-full"
             onTransitionEnd={handleSlideEnd}
@@ -153,7 +159,7 @@ const ServicesSection = () => {
           type="button"
           onClick={showNextServices}
           disabled={!canRotate}
-          className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-black/35 text-2xl leading-none text-white/75 transition hover:border-(--primary) hover:text-(--primary) disabled:opacity-50"
+          className="order-3 flex size-11 cursor-pointer items-center justify-center justify-self-end rounded-full border border-white/10 bg-black/35 text-2xl leading-none text-white/75 transition hover:border-(--primary) hover:text-(--primary) disabled:opacity-50"
           aria-label="Show next services"
         >
           <span className="-translate-y-px" aria-hidden="true">

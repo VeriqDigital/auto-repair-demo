@@ -44,7 +44,7 @@ const LeadModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-4 py-8 backdrop-blur-sm"
+      className="fixed inset-x-0 bottom-0 top-12 z-50 flex items-start justify-center overflow-y-auto bg-black/75 px-4 py-4 backdrop-blur-sm sm:top-9 sm:py-8"
       role="presentation"
       onClick={onClose}
     >
@@ -52,7 +52,7 @@ const LeadModal = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby={`${activeModal}-form-title`}
-        className="w-full max-w-xl rounded-lg border border-white/10 bg-(--surface) p-6 text-white shadow-[0_24px_70px_rgba(0,0,0,0.5)]"
+        className="w-full max-w-xl rounded-lg border border-white/10 bg-(--surface) p-6 text-white shadow-[0_24px_70px_rgba(0,0,0,0.5)] sm:my-auto"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-6 flex items-start justify-between gap-4">
