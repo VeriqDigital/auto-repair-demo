@@ -1,12 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { services } from "@/data/services";
 
 const ServicesSection = () => {
   const animationDirection = useRef(0);
-  const queuedSteps = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [trackOffset, setTrackOffset] = useState(-1);
@@ -22,35 +21,15 @@ const ServicesSection = () => {
     },
   );
 
-  const startRotation = useCallback((direction: number) => {
+  const startRotation = (direction: number) => {
     animationDirection.current = direction;
     setTransitionEnabled(true);
     setIsAnimating(true);
     setTrackOffset(direction === 1 ? -2 : 0);
-  }, []);
-
-  useEffect(() => {
-    if (isAnimating || queuedSteps.current === 0 || !canRotate) {
-      return;
-    }
-
-    const direction = queuedSteps.current > 0 ? 1 : -1;
-    queuedSteps.current -= direction;
-
-    const animationFrame = requestAnimationFrame(() => {
-      startRotation(direction);
-    });
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [canRotate, isAnimating, startRotation]);
+  };
 
   const rotateServices = (direction: number) => {
-    if (!canRotate) {
-      return;
-    }
-
-    if (isAnimating) {
-      queuedSteps.current += direction;
+    if (!canRotate || isAnimating) {
       return;
     }
 
