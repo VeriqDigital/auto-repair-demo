@@ -9,24 +9,24 @@ const ServicesSection = () => {
   const queuedSteps = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [trackOffset, setTrackOffset] = useState(-100);
+  const [trackOffset, setTrackOffset] = useState(-1);
   const [transitionEnabled, setTransitionEnabled] = useState(false);
   const visibleCount = Math.min(3, services.length);
   const canRotate = services.length > visibleCount;
-  const carouselPanels = [-1, 0, 1].map((panelOffset) =>
-    Array.from({ length: visibleCount }, (_, serviceOffset) => {
-      const serviceIndex =
-        currentIndex + panelOffset + serviceOffset + services.length;
+  const carouselServices = Array.from(
+    { length: visibleCount + 2 },
+    (_, serviceOffset) => {
+      const serviceIndex = currentIndex + serviceOffset - 1 + services.length;
 
       return services[serviceIndex % services.length];
-    }),
+    },
   );
 
   const startRotation = useCallback((direction: number) => {
     animationDirection.current = direction;
     setTransitionEnabled(true);
     setIsAnimating(true);
-    setTrackOffset(direction === 1 ? -200 : 0);
+    setTrackOffset(direction === 1 ? -2 : 0);
   }, []);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const ServicesSection = () => {
         (index + animationDirection.current + services.length) %
         services.length,
     );
-    setTrackOffset(-100);
+    setTrackOffset(-1);
     setIsAnimating(false);
   };
 
@@ -85,8 +85,9 @@ const ServicesSection = () => {
     serviceOffset: number,
   ) => (
     <article
-      key={service.title}
-      className={`${serviceOffset > 0 ? "hidden md:flex" : "flex"} h-full flex-col rounded-lg border border-white/10 bg-(--surface) p-6 md:p-7`}
+      key={`${service.title}-${serviceOffset}`}
+      className="flex h-full shrink-0 basis-full flex-col rounded-lg border border-white/10 bg-(--surface) p-6 md:basis-[calc((100%-3rem)/3)] md:p-7"
+      aria-hidden={serviceOffset === 0 || serviceOffset === visibleCount + 1}
     >
       <h3 className="font-heading text-lg font-black uppercase leading-tight text-white">
         {service.title}
@@ -132,24 +133,16 @@ const ServicesSection = () => {
           aria-live="polite"
         >
           <div
-            className="flex h-full"
+            className="flex h-full gap-6 [--service-step:calc(100%+1.5rem)] md:[--service-step:calc((100%-3rem)/3+1.5rem)]"
             onTransitionEnd={handleSlideEnd}
             style={{
-              transform: `translateX(${trackOffset}%)`,
+              transform: `translateX(calc(${trackOffset} * var(--service-step)))`,
               transition: transitionEnabled
                 ? "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)"
                 : "none",
             }}
           >
-            {carouselPanels.map((panelServices, panelIndex) => (
-              <div
-                key={panelIndex}
-                className="grid h-full w-full shrink-0 gap-6 md:grid-cols-3"
-                aria-hidden={panelIndex !== 1}
-              >
-                {panelServices.map(getServiceCard)}
-              </div>
-            ))}
+            {carouselServices.map(getServiceCard)}
           </div>
           <span className="sr-only">
             Showing services: {currentServiceTitles.join(", ")}
