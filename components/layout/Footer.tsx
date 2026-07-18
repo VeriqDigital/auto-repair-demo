@@ -156,6 +156,17 @@ const Footer = () => {
           <p className="text-white/80">
             &copy; 2026 {siteConfig.name}. All rights reserved.
           </p>
+          <p className="mt-1 normal-case text-white/45">
+            Website designed by{" "}
+            <Link
+              href="https://www.veriqdigital.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-(--primary)"
+            >
+              Veriq Digital
+            </Link>
+          </p>
         </div>
       </div>
 
